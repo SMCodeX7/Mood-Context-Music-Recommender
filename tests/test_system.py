@@ -6,7 +6,7 @@ client = TestClient(create_app())
 
 
 def test_read_root() -> None:
-    response = client.get("/")
+    response = client.get("/api/v1/")
 
     assert response.status_code == 200
     assert response.json() == {
@@ -16,9 +16,15 @@ def test_read_root() -> None:
 
 
 def test_health_check() -> None:
-    response = client.get("/health")
+    response = client.get("/api/v1/health")
 
     assert response.status_code == 200
     assert response.json() == {
         "status": "healthy",
     }
+
+
+def test_unversioned_health_endpoint_not_found() -> None:
+    response = client.get("/health")
+
+    assert response.status_code == 404

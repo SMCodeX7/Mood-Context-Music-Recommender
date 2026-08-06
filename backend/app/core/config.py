@@ -14,6 +14,7 @@ class Settings(BaseSettings):
     debug: bool = True
     api_host: str = "127.0.0.1"
     api_port: int = 8000
+    api_v1_prefix: str = "/api/v1"
     spotify_client_id: str = ""
     spotify_client_secret: str = ""
 
