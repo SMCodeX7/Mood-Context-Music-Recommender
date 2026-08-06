@@ -1,13 +1,17 @@
 from fastapi import FastAPI
 
 from backend.app.api.router import api_router
+from backend.app.core.config import get_settings
 
 
 def create_app() -> FastAPI:
+    settings = get_settings()
+
     application = FastAPI(
-        title="MoodTune AI API",
-        description="Backend API for the context-aware music recommendation system.",
-        version="0.1.0",
+        title=f"{settings.app_name} API",
+        description=settings.app_description,
+        version=settings.app_version,
+        debug=settings.debug,
     )
 
     application.include_router(api_router)
