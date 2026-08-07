@@ -37,6 +37,9 @@ def initialize_recommendation_state() -> None:
     if "recommendation_input" not in st.session_state:
         st.session_state.recommendation_input = None
 
+    if "recommendation_feedback" not in st.session_state:
+        st.session_state.recommendation_feedback = None
+
 
 def render_recommendation_form() -> None:
     initialize_recommendation_state()
@@ -46,21 +49,25 @@ def render_recommendation_form() -> None:
             "How are you feeling?",
             placeholder="Example: I feel tired and want calm music",
             max_chars=500,
+            key="mood_text",
         )
 
         language = st.selectbox(
             "Preferred language",
             LANGUAGES,
+            key="language",
         )
 
         listening_context = st.selectbox(
             "Listening context",
             LISTENING_CONTEXTS,
+            key="listening_context",
         )
 
         genre = st.selectbox(
             "Genre preference",
             GENRES,
+            key="genre",
         )
 
         recommendation_count = st.slider(
@@ -69,6 +76,7 @@ def render_recommendation_form() -> None:
             max_value=25,
             value=10,
             step=5,
+            key="recommendation_count",
         )
 
         submitted = st.form_submit_button(
@@ -81,18 +89,31 @@ def render_recommendation_form() -> None:
         cleaned_mood_text = mood_text.strip()
 
         if not cleaned_mood_text:
-            st.warning("Describe how you are feeling before continuing")
-            return
+            st.session_state.recommendation_feedback = {
+                "type": "warning",
+                "message": "Describe how you are feeling before continuing",
+            }
+        else:
+            st.session_state.recommendation_input = {
+                "mood_text": cleaned_mood_text,
+                "language": language,
+                "listening_context": listening_context,
+                "genre": genre,
+                "recommendation_count": recommendation_count,
+            }
 
-        st.session_state.recommendation_input = {
-            "mood_text": cleaned_mood_text,
-            "language": language,
-            "listening_context": listening_context,
-            "genre": genre,
-            "recommendation_count": recommendation_count,
-        }
+            st.session_state.recommendation_feedback = {
+                "type": "success",
+                "message": "Recommendation request prepared",
+            }
 
-        st.success("Recommendation request prepared")
+    feedback = st.session_state.recommendation_feedback
+
+    if feedback:
+        if feedback["type"] == "warning":
+            st.warning(feedback["message"])
+        elif feedback["type"] == "success":
+            st.success(feedback["message"])
 
     request_data = st.session_state.recommendation_input
 
