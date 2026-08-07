@@ -1,5 +1,7 @@
 import streamlit as st
 
+from frontend.components.backend_status import render_backend_status
+
 st.set_page_config(
     page_title="MoodTune AI",
     page_icon="🎵",
@@ -14,7 +16,7 @@ with st.sidebar:
 
     st.subheader("Current Phase")
     st.write("Frontend foundation")
-    st.info("Backend connection will be added in a later checkpoint")
+    st.info("Recommendation features will be added in upcoming phases")
 
 st.title("MoodTune AI")
 st.subheader("Context-Aware Music Recommendation System")
@@ -36,8 +38,8 @@ with main_column:
 
 with status_column:
     st.subheader("System Status")
-    st.write("Frontend: Ready")
-    st.write("Backend: Not checked yet")
+    st.success("Frontend: Ready")
+    render_backend_status()
 
 st.divider()
 
