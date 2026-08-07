@@ -1,6 +1,7 @@
 import streamlit as st
 
 from frontend.components.backend_status import render_backend_status
+from frontend.components.recommendation_form import render_recommendation_form
 
 st.set_page_config(
     page_title="MoodTune AI",
@@ -16,7 +17,7 @@ with st.sidebar:
 
     st.subheader("Current Phase")
     st.write("Frontend foundation")
-    st.info("Recommendation features will be added in upcoming phases")
+    st.info("Recommendation generation will be added in later phases")
 
 st.title("MoodTune AI")
 st.subheader("Context-Aware Music Recommendation System")
@@ -31,10 +32,7 @@ main_column, status_column = st.columns([2, 1], gap="large")
 
 with main_column:
     st.subheader("Recommendation Workspace")
-    st.write(
-        "Your mood and music preference controls will appear here "
-        "as the recommendation system is developed"
-    )
+    render_recommendation_form()
 
 with status_column:
     st.subheader("System Status")
