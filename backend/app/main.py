@@ -2,6 +2,7 @@ from fastapi import FastAPI
 
 from backend.app.api.router import api_router
 from backend.app.core.config import get_settings
+from backend.app.core.exception_handlers import register_exception_handlers
 
 
 def create_app() -> FastAPI:
@@ -13,6 +14,8 @@ def create_app() -> FastAPI:
         version=settings.app_version,
         debug=settings.debug,
     )
+
+    register_exception_handlers(application)
 
     application.include_router(
         api_router,

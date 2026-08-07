@@ -28,3 +28,23 @@ def test_unversioned_health_endpoint_not_found() -> None:
     response = client.get("/health")
 
     assert response.status_code == 404
+    assert response.json() == {
+        "error": {
+            "status_code": 404,
+            "detail": "Not Found",
+            "path": "/health",
+        }
+    }
+
+
+def test_unknown_versioned_endpoint_not_found() -> None:
+    response = client.get("/api/v1/unknown")
+
+    assert response.status_code == 404
+    assert response.json() == {
+        "error": {
+            "status_code": 404,
+            "detail": "Not Found",
+            "path": "/api/v1/unknown",
+        }
+    }
